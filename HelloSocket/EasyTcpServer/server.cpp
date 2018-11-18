@@ -6,6 +6,12 @@
 #include <WinSock2.h>
 #include <stdio.h>
 
+struct DataPackage
+{
+	int age;
+	char name[32];
+};
+
 int main(int argc, char** argv)
 {
 	//启动Windows socket 2.x环境
@@ -70,19 +76,13 @@ int main(int argc, char** argv)
 			printf("客户端已退出，任务结束...\n");
 			break;
 		}
-		printf("收到命令：%s...\n", _recvBuf);
+		printf("收到命令：%s\n", _recvBuf);
 		//6、处理请求
-		if (0 == strcmp(_recvBuf, "getName"))
+		if (0 == strcmp(_recvBuf, "getInfo"))
 		{
-			char msgBuf[] = "Xiao Qiang.";
+			DataPackage dp = {80, "小张"};
 			//7、向客户端发送一条数据 send
-			send(_cSock, msgBuf, strlen(msgBuf) + 1, 0);
-		}
-		else if (0 == strcmp(_recvBuf, "getAge"))
-		{
-			char msgBuf[] = "80.";
-			//7、向客户端发送一条数据 send
-			send(_cSock, msgBuf, strlen(msgBuf) + 1, 0);
+			send(_cSock, (const char*)&dp, sizeof(DataPackage), 0);
 		}
 		else
 		{

@@ -7,6 +7,12 @@
 #include <WinSock2.h>
 #include <stdio.h>
 
+struct DataPackage
+{
+	int age;
+	char name[32];
+};
+
 int main(int argc, char** argv)
 {
 	//启动Windows socket 2.x环境
@@ -61,7 +67,8 @@ int main(int argc, char** argv)
 		int nLen = recv(_sock, revBuf, 128, 0);
 		if (nLen > 0)
 		{
-			printf("接收到数据 %s...\n", revBuf);
+			DataPackage* dp = (DataPackage*)revBuf;
+			printf("接收到数据: 年龄=%d, 姓名=%s\n", dp->age,dp->name);
 		}
 	}
 	
