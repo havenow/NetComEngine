@@ -17,11 +17,20 @@ int main(int argc, char** argv)
 	//用socket API建立简易TCP服务端
 	//1、建立一个socket
 	SOCKET _sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (INVALID_SOCKET == _sock)
+	{
+		printf("错误，建立socket失败...\n");
+	}
+	else
+	{
+		printf("建立socket成功...\n");
+	}
 	//2、绑定接受客户端连接的端口 bind
 	sockaddr_in _sin = {};
 	_sin.sin_family = AF_INET;
 	_sin.sin_port = htons(4567);//host to net unsinged short
-	if (SOCKET_ERROR == bind(_sock, (sockaddr*)&_sin, sizeof(_sin)))
+	_sin.sin_addr.S_un.S_addr = INADDR_ANY;//inet_addr("127.0.0.1");
+	if (SOCKET_ERROR == bind(_sock, (sockaddr*)&_sin, sizeof(sockaddr_in)))
 	{
 		printf("错误，绑定网络端口失败...\n");
 	}
