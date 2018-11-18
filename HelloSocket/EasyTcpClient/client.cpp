@@ -1,6 +1,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 
 #include <windows.h>
 #include <WinSock2.h>
@@ -38,18 +39,38 @@ int main(int argc, char** argv)
 	{
 		printf("连接服务器成功...\n");
 	}
-	//3、接收服务器信息 recv
-	char revBuf[256] = {};
-	int nLen = recv(_sock, revBuf, 256, 0);
-	if (nLen > 0)
+	while (true)
 	{
-		printf("接收到数据 %s...\n", revBuf);
-	} 
-	//4、关闭socket closesocket
+		//3、输入请求命令
+		char cmdBuf[128] = {};
+		scanf("%s", cmdBuf);
+		//4、处理请求命令
+		if (0 == strcmp(cmdBuf, "exit"))
+		{
+			printf("收到exit命令，任务结束...\n");
+			break;
+		}
+		else
+		{
+			//5、向服务器发送请求
+			send(_sock, cmdBuf, strlen(cmdBuf) + 1, 0);
+		}
+
+		//6、接收服务器信息 recv
+		char revBuf[128] = {};
+		int nLen = recv(_sock, revBuf, 128, 0);
+		if (nLen > 0)
+		{
+			printf("接收到数据 %s...\n", revBuf);
+		}
+	}
+	
+	//7、关闭socket closesocket
 	closesocket(_sock);
 
 	//清除Windows socket环境
 	WSACleanup();
+	printf("客户端退出，任务结束...\n");
 	getchar();
 	return 0;
 }
