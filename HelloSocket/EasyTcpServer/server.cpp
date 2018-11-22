@@ -119,25 +119,26 @@ int main(int argc, char** argv)
 	}
 	printf("新客户端加入：socket = %d, IP = %s\n", (int)_cSock, inet_ntoa(clientAddr.sin_addr));
 
-	char _recvBuf[128] = {};
 	while (true)
 	{
-		DataHeader header = {};
+		//缓冲区
+		char szRecv[4096] = {};
 		//5、接收客户端数据
-		int nLen = recv(_cSock, (char*)&header, sizeof(DataHeader), 0);
+		int nLen = recv(_cSock, szRecv, sizeof(DataHeader), 0);
+		DataHeader* header = (DataHeader*)szRecv;
 		if (nLen <=0)
 		{
 			printf("客户端已退出，任务结束...\n");
 			break;
 		}
-		
-		switch (header.cmd)
+
+		switch (header->cmd)
 		{
 		case CMD_LOGIN:
 		{
-			Login login = {};
-			recv(_cSock, (char*)&login + sizeof(DataHeader), sizeof(Login) - sizeof(DataHeader), 0);
-			printf("收到命令：CMD_LOGIN，数据长度：%d, userName=%s, PassWord=%s\n", login.dataLength, login.userName, login.passWord);
+			recv(_cSock, szRecv + sizeof(DataHeader), header->dataLength - sizeof(DataHeader), 0);
+			Login* login = (Login*)szRecv;
+			printf("收到命令：CMD_LOGIN，数据长度：%d, userName=%s, PassWord=%s\n", login->dataLength, login->userName, login->passWord);
 			//忽略判断用户名密码是否正确的过程
 
 			LoginResult ret;
@@ -146,9 +147,9 @@ int main(int argc, char** argv)
 			break;
 		case CMD_LOGOUT:
 		{
-			Logout logout = {};
-			recv(_cSock, (char*)&logout + sizeof(DataHeader), sizeof(Logout) - sizeof(DataHeader), 0);
-			printf("收到命令：CMD_LOGOUT，数据长度：%d, userName=%s\n", logout.dataLength, logout.userName);
+			recv(_cSock, szRecv + sizeof(DataHeader), header->dataLength - sizeof(DataHeader), 0);
+			Logout* logout = (Logout*)szRecv;
+			printf("收到命令：CMD_LOGOUT，数据长度：%d, userName=%s\n", logout->dataLength, logout->userName);
 			//忽略判断用户名密码是否正确的过程
 
 			LogoutResult ret;
@@ -157,8 +158,7 @@ int main(int argc, char** argv)
 			break;
 		default:
 		{
-			header.cmd = CMD_ERROR;
-			header.dataLength = 0;
+			DataHeader header = {0, CMD_ERROR};
 			send(_cSock, (char*)&header, sizeof(DataHeader), 0);
 		}
 			break;
