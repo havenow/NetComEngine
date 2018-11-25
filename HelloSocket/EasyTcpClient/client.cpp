@@ -3,8 +3,19 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <windows.h>
-#include <WinSock2.h>
+#ifdef _WIN32
+	#include <windows.h>
+	#include <WinSock2.h>
+#else
+	#include <unistd.h>
+	#include <arpa/inet.h>
+	#include <string.h>
+
+	#define SOCKET int
+	#define INVALID_SOCKET  (SOCKET)(~0)
+	#define SOCKET_ERROR            (-1)
+#endif
+
 #include <stdio.h>
 #include <thread>
 
@@ -84,7 +95,7 @@ int processor(SOCKET _cSock)
 	//缓冲区
 	char szRecv[4096] = {};
 	//5、接收客户端数据
-	int nLen = recv(_cSock, szRecv, sizeof(DataHeader), 0);
+	int nLen = (int)recv(_cSock, szRecv, sizeof(DataHeader), 0);
 	DataHeader* header = (DataHeader*)szRecv;
 	if (nLen <= 0)
 	{
@@ -154,10 +165,12 @@ void cmdThread(SOCKET sock)
 
 int main(int argc, char** argv)
 {
+#ifdef _WIN32
 	//启动Windows socket 2.x环境
 	WORD ver = MAKEWORD(2, 2);
 	WSADATA dat;
 	WSAStartup(ver, &dat);
+#endif
 
 	//用socket API建立简易TCP客户端端
 	//1、建立一个socket
@@ -174,7 +187,11 @@ int main(int argc, char** argv)
 	sockaddr_in _sin = {};
 	_sin.sin_family = AF_INET;
 	_sin.sin_port = htons(4567);//host to net unsinged short
+#ifdef _WIN32
 	_sin.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
+#else
+	_sin.sin_addr.s_addr = inet_addr("127.0.0.1");//服务器的ip地址；如果客户端在虚拟机中运行的，注意ip地址
+#endif
 	int ret = connect(_sock, (sockaddr*)(&_sin), sizeof(sockaddr_in));
 	if (SOCKET_ERROR == ret)
 	{
@@ -195,7 +212,7 @@ int main(int argc, char** argv)
 		FD_ZERO(&fdReads);
 		FD_SET(_sock, &fdReads);
 		timeval t = { 1, 0 };
-		int ret = select(_sock, &fdReads, nullptr, nullptr, &t);
+		int ret = select(_sock + 1, &fdReads, nullptr, nullptr, &t);
 		if (ret < 0)
 		{
 			printf("select任务结束1...\n");
@@ -215,12 +232,16 @@ int main(int argc, char** argv)
 		
 		//Sleep(1000);
 	}
-	
+
+#ifdef _WIN32
 	//7、关闭socket closesocket
 	closesocket(_sock);
-
 	//清除Windows socket环境
 	WSACleanup();
+#else
+	close(_sock);
+#endif
+
 	printf("客户端退出，任务结束...\n");
 	getchar();
 	return 0;
