@@ -116,6 +116,7 @@ int processor(SOCKET _cSock)
 	}
 	break;
 	}
+	return 0;
 }
 
 bool g_bRun = true;
@@ -142,7 +143,7 @@ void cmdThread(SOCKET sock)
 		{
 			Logout logout;
 			strcpy(logout.userName, "lyd");
-			send(sock, (const char*)&logout, sizeof(Login), 0);
+			send(sock, (const char*)&logout, sizeof(Logout), 0);
 		}
 		else
 		{

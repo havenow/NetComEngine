@@ -124,6 +124,7 @@ int processor(SOCKET _cSock)
 	}
 	break;
 	}
+	return 0;
 }
 
 int main(int argc, char** argv)
