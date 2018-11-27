@@ -36,23 +36,32 @@ void cmdThread(EasyTcpClient* client)
 
 int main(int argc, char** argv)
 {
-	EasyTcpClient client;
+	EasyTcpClient client1;
+	//client1.InitSocket();
+	client1.Connect("127.0.0.1", 4567);
+
+	EasyTcpClient client2;
 	//client.InitSocket();
-	client.Connect("127.0.0.1", 4567);
+	client2.Connect("192.168.71.11", 4567);//MAC OS
 
 	//启动UI线程
-	std::thread t1(cmdThread, &client);
+	std::thread t1(cmdThread, &client1);
 	t1.detach();
 
-	while (client.isRun())
+	std::thread t2(cmdThread, &client2);
+	t2.detach();
+
+	while (client1.isRun() || client2.isRun())
 	{
-		client.OnRun();
+		client1.OnRun();
+		client2.OnRun();
 		//printf("空闲时间处理其他业务...\n");
 		
 		//Sleep(1000);
 	}
 
-	client.Close();
+	client1.Close();
+	client2.Close();
 	printf("客户端退出，任务结束...\n");
 	getchar();
 	return 0;
