@@ -50,11 +50,7 @@ public:
 		if (INVALID_SOCKET != _sock)
 		{
 			printf("<socket=%d>关闭旧连接...\n", _sock);
-#ifdef _WIN32
-			closesocket(_sock);
-#else
-			close(_sock);
-#endif
+			Close();
 		}
 		_sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 		if (INVALID_SOCKET == _sock)
@@ -169,7 +165,7 @@ public:
 	}
 
 	//响应网络消息
-	void OnNetMsg(DataHeader* header)
+	virtual void OnNetMsg(DataHeader* header)
 	{
 		switch (header->cmd)
 		{
