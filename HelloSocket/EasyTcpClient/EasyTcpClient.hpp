@@ -115,6 +115,7 @@ public:
 	}
 
 	//处理网络消息
+	int _nCount = 0;
 	bool OnRun()
 	{
 		if (isRun())
@@ -124,6 +125,7 @@ public:
 			FD_SET(_sock, &fdReads);
 			timeval t = { 0, 0 };
 			int ret = select(_sock + 1, &fdReads, nullptr, nullptr, &t);
+			printf("select ret=%d count=%d\n", ret, _nCount++);
 			if (ret < 0)
 			{
 				printf("<socket=%d>select任务结束1...\n", _sock);
@@ -146,21 +148,23 @@ public:
 		return false;
 	}
 
+	//缓冲区
+	char szRecv[409600] = {};
+
 	//接收数据 处理粘包 拆包
 	int RecvData(SOCKET _cSock)
 	{
-		//缓冲区
-		char szRecv[4096] = {};
 		//5、接收客户端数据
-		int nLen = (int)recv(_cSock, szRecv, sizeof(DataHeader), 0);
-		DataHeader* header = (DataHeader*)szRecv;
+		int nLen = (int)recv(_cSock, szRecv, 409600, 0);
+		printf("nLen=%d\n", nLen);
+		/*DataHeader* header = (DataHeader*)szRecv;
 		if (nLen <= 0)
 		{
 			printf("<socket=%d>与服务器断开连接，任务结束...\n", _cSock);
 			return -1;
 		}
 		recv(_cSock, szRecv + sizeof(DataHeader), header->dataLength - sizeof(DataHeader), 0);
-		OnNetMsg(header);
+		OnNetMsg(header);*/
 		return 0;
 	}
 

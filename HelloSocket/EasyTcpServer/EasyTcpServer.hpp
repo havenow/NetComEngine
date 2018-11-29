@@ -178,6 +178,7 @@ public:
 	}
 
 	//处理网络消息
+	int _nCount = 0;
 	bool OnRun()
 	{
 		if (isRun())
@@ -207,6 +208,7 @@ public:
 			//即是所有文件描述符最大值+1，在Windows中这个参数可以写0
 			timeval t = { 1, 0 };
 			int ret = select(maxSock + 1, &fdRead, &fdWrite, &fdExp, &t);
+			printf("select ret=%d count=%d\n", ret, _nCount++);
 			if (ret < 0)
 			{
 				printf("select任务结束...\n");
@@ -245,21 +247,25 @@ public:
 		return _sock != INVALID_SOCKET;
 	}
 
+	//缓冲区
+	char szRecv[409600] = {};
+
 	//接收数据 处理粘包
 	int RecvData(SOCKET _cSock)
 	{
-		//缓冲区
-		char szRecv[4096] = {};
 		//5、接收客户端数据
-		int nLen = (int)recv(_cSock, szRecv, sizeof(DataHeader), 0);
-		DataHeader* header = (DataHeader*)szRecv;
+		int nLen = (int)recv(_cSock, szRecv, 409600, 0);
+		printf("nLen=%d\n", nLen);
+		LoginResult ret;
+		SendData(_cSock, &ret);
+		/*DataHeader* header = (DataHeader*)szRecv;
 		if (nLen <= 0)
 		{
 			printf("客户端<Socket=%d>已退出，任务结束...\n", _cSock);
 			return -1;
 		}
 		recv(_cSock, szRecv + sizeof(DataHeader), header->dataLength - sizeof(DataHeader), 0);
-		OnNetMsg(_cSock, header);
+		OnNetMsg(_cSock, header);*/
 		return 0;
 	}
 
@@ -275,7 +281,7 @@ public:
 			//忽略判断用户名密码是否正确的过程
 
 			LoginResult ret;
-			send(_cSock, (char*)&ret, sizeof(LoginResult), 0);
+			SendData(_cSock, &ret);
 		}
 		break;
 		case CMD_LOGOUT:
@@ -285,13 +291,13 @@ public:
 			//忽略判断用户名密码是否正确的过程
 
 			LogoutResult ret;
-			send(_cSock, (char*)&ret, sizeof(LogoutResult), 0);
+			SendData(_cSock, &ret);
 		}
 		break;
 		default:
 		{
 			DataHeader header = { 0, CMD_ERROR };
-			send(_cSock, (char*)&header, sizeof(DataHeader), 0);
+			SendData(_cSock, &header);
 		}
 		break;
 		}

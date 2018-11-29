@@ -45,15 +45,19 @@ int main(int argc, char** argv)
 	//client2.Connect("192.168.71.11", 4567);//MAC OS
 
 	//启动UI线程
-	std::thread t1(cmdThread, &client1);
-	t1.detach();
+	//std::thread t1(cmdThread, &client1);
+	//t1.detach();
 
 	//std::thread t2(cmdThread, &client2);
 	//t2.detach();
 
+	Login login;
+	strcpy(login.userName, "lyd");
+	strcpy(login.passWord, "lydmm");
 	while (client1.isRun() /*|| client2.isRun()*/)
 	{
 		client1.OnRun();
+		client1.SendData(&login);
 		//client2.OnRun();
 		//printf("空闲时间处理其他业务...\n");
 		
