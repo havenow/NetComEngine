@@ -206,9 +206,9 @@ public:
 			}
 			//nfds 是一个整数值 是指fd_set集合中所有描述符(socket)的范围，而不是数量
 			//即是所有文件描述符最大值+1，在Windows中这个参数可以写0
-			timeval t = { 1, 0 };
+			timeval t = { 0, 0 };
 			int ret = select(maxSock + 1, &fdRead, &fdWrite, &fdExp, &t);
-			printf("select ret=%d count=%d\n", ret, _nCount++);
+			//printf("select ret=%d count=%d\n", ret, _nCount++);
 			if (ret < 0)
 			{
 				printf("select任务结束...\n");
@@ -255,15 +255,15 @@ public:
 	{
 		//5、接收客户端数据
 		int nLen = (int)recv(_cSock, szRecv, 409600, 0);
-		printf("nLen=%d\n", nLen);
-		LoginResult ret;
-		SendData(_cSock, &ret);
-		/*DataHeader* header = (DataHeader*)szRecv;
+		//printf("nLen=%d\n", nLen);
 		if (nLen <= 0)
 		{
 			printf("客户端<Socket=%d>已退出，任务结束...\n", _cSock);
 			return -1;
 		}
+		LoginResult ret;
+		SendData(_cSock, &ret);
+		/*DataHeader* header = (DataHeader*)szRecv;
 		recv(_cSock, szRecv + sizeof(DataHeader), header->dataLength - sizeof(DataHeader), 0);
 		OnNetMsg(_cSock, header);*/
 		return 0;
