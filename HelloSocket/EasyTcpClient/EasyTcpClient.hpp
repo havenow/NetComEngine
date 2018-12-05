@@ -149,7 +149,9 @@ public:
 	}
 
 	//缓冲区最小单元
-#define RECV_BUFF_SIZE 10240
+#ifndef RECV_BUFF_SIZE
+	#define RECV_BUFF_SIZE 10240
+#endif
 	//接收缓冲区
 	char _szRecv[RECV_BUFF_SIZE] = {};
 	//第二缓冲区 消息缓冲区
