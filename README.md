@@ -14,3 +14,4 @@
 3、接收服务器信息 recv		     
 4、关闭socket closesocket		    
 
+![](https://github.com/havenow/NetComEngine/blob/master/pic/socket(tcp).png)
