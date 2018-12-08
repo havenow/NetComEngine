@@ -15,3 +15,6 @@
 4、关闭socket closesocket		    
 
 ![](https://github.com/havenow/NetComEngine/blob/master/pic/socket(tcp).png)
+
+
+![](https://github.com/havenow/NetComEngine/blob/master/pic/%E6%8C%81%E7%BB%AD%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82%E7%BD%91%E7%BB%9C%E7%A8%8B%E5%BA%8F.png)
