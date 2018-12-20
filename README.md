@@ -1,4 +1,6 @@
-# NetComEngine
+# NetComEngine    
+Linux：select、epoll     
+Windows：select、IOCP      
 
 手机和手机局域网通信：手机A开热点后（不要设置密码），IP地址是一个固定的值：192.168.43.1，手机B将服务端地址设置为192.168.43.1，可以进行局域网通信。     
 
