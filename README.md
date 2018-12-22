@@ -34,3 +34,6 @@ Windows：select、IOCP
 ![](https://github.com/havenow/NetComEngine/blob/master/pic/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%BAselect%E6%A8%A1%E5%9E%8B%E5%A4%84%E7%90%86%E5%A4%9A%E5%AE%A2%E6%88%B7%E7%AB%AF.png)
 
 ![](https://github.com/havenow/NetComEngine/blob/master/pic/%E7%B2%98%E5%8C%85%E5%8E%9F%E5%9B%A0.png)
+
+FD_SETSIZE Windows下是64，Linux和MACos下是1024。     
+
