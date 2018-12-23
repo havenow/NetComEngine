@@ -1,6 +1,26 @@
-摘录《TCP IP网络编程》     
+摘录自《TCP IP网络编程》 
 
-- select函数调用示例
+
+![](https://github.com/havenow/NetComEngine/blob/master/pic/IO%E5%A4%8D%E7%94%A8%E7%9A%84%E7%90%86%E8%A7%A3.png)
+
+![](https://github.com/havenow/NetComEngine/blob/master/pic/%E5%A4%8D%E7%94%A8%E6%8A%80%E6%9C%AF%E5%9C%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%9A%84%E5%BA%94%E7%94%A8.png)
+
+- # select函数的功能和调用顺序
+![](https://github.com/havenow/NetComEngine/blob/master/pic/select%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B.png)
+
+- 设置文件描述符     
+select函数可以同时监视多个文件描述符（套接字），首先需要将要监视的文件描述符集中到一起，使用fd_set数字变量执行此项操作。下图 是fd_set结构体
+
+![](https://github.com/havenow/NetComEngine/blob/master/pic/fd_set%E7%BB%93%E6%9E%84%E4%BD%93.png)
+
+fd_set变量中注册或更改值的操作有下列宏完成：    
+
+![](https://github.com/havenow/NetComEngine/blob/master/pic/fd_set%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0%E7%9A%84%E5%8A%9F%E8%83%BD.png)
+
+
+
+
+- # select函数调用示例
 
 下面的代码可在Linux、MACOS下运行     
 ```c++
