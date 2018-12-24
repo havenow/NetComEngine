@@ -25,6 +25,19 @@ fd_set变量中注册或更改值的操作有下列宏完成：
 ![](https://github.com/havenow/NetComEngine/blob/master/pic/select%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0.png)
 
 
+select函数的超时时间与select函数的最后一个参数有关，timeval结构体定义如下：
+```c++
+struct timeval
+{
+    long tv_sec;    //seconds
+    long tv_usec;   //microseconds
+};
+```
+
+- 调用select函数后查看结果     
+select函数的返回值如果大于0，说明相应数量的文件描述符发生变化。     
+
+![](https://github.com/havenow/NetComEngine/blob/master/pic/fd_set%E5%8F%98%E9%87%8F%E7%9A%84%E5%8F%98%E5%8C%96.png)
 
 - # select函数调用示例
 
