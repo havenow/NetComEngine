@@ -93,6 +93,8 @@ int main(int argc, char* argv[])
 
 ```
 
+![](https://github.com/havenow/NetComEngine/blob/master/pic/%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.png)
+
 下面的实现方式不用做fd_set变量reads的复制，而是在while循环里面做FD_ZERO FD_SET     
 ```c++
 #include <stdio.h>
