@@ -33,6 +33,8 @@ struct timeval
     long tv_usec;   //microseconds
 };
 ```
+windows平台调用select函数     
+![](https://github.com/havenow/NetComEngine/blob/master/pic/windows%E5%B9%B3%E5%8F%B0%E8%B0%83%E7%94%A8select%E5%87%BD%E6%95%B0.png)
 
 - 调用select函数后查看结果     
 select函数的返回值如果大于0，说明相应数量的文件描述符发生变化。     
