@@ -2,10 +2,10 @@
 #define _EasyTcpServer_hpp_
 
 #ifdef _WIN32
+	#define FD_SETSIZE      1024
 	#define WIN32_LEAN_AND_MEAN
 	#define _WINSOCK_DEPRECATED_NO_WARNINGS
 	#define _CRT_SECURE_NO_WARNINGS
-
 	#include <windows.h>
 	#include <WinSock2.h>
 #else
@@ -184,10 +184,10 @@ public:
 		}
 		else
 		{
-			NewUserJoin userJoin;
-			SendData2All(&userJoin);
+			//NewUserJoin userJoin;
+			//SendData2All(&userJoin);
 			_clients.push_back(new ClientSocket(cSock));
-			printf("<socket=%d>新客户端加入：socket = %d, IP = %s\n", (int)_sock, (int)cSock, inet_ntoa(clientAddr.sin_addr));
+			printf("<socket=%d>新客户端<%d>加入：socket = %d, IP = %s\n", (int)_sock, _clients.size(), (int)cSock, inet_ntoa(clientAddr.sin_addr));
 		}
 		return cSock;
 	}
@@ -348,8 +348,8 @@ public:
 			//printf("收到客户端<Socket=%d>请求：CMD_LOGIN，数据长度：%d, userName=%s, PassWord=%s\n", cSock, login->dataLength, login->userName, login->passWord);
 			//忽略判断用户名密码是否正确的过程
 
-			LoginResult ret;
-			SendData(cSock, &ret);
+			//LoginResult ret;
+			//SendData(cSock, &ret);
 		}
 		break;
 		case CMD_LOGOUT:
@@ -358,8 +358,8 @@ public:
 			//printf("收到客户端<Socket=%d>请求：CMD_LOGOUT，数据长度：%d, userName=%s\n", cSock, logout->dataLength, logout->userName);
 			//忽略判断用户名密码是否正确的过程
 
-			LogoutResult ret;
-			SendData(cSock, &ret);
+			//LogoutResult ret;
+			//SendData(cSock, &ret);
 		}
 		break;
 		default:

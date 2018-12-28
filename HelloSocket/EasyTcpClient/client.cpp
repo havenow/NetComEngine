@@ -23,15 +23,23 @@ void cmdThread()
 
 int main(int argc, char** argv)
 {
-	const int cCount = FD_SETSIZE - 1;
+	const int cCount = 1000;// FD_SETSIZE - 1;
 	EasyTcpClient* client[cCount];
 
 	for (int n = 0; n < cCount; n++)
 	{
+		if (!g_bRun)
+		{
+			return 0;
+		}
 		client[n] = new EasyTcpClient();
 	}
 	for (int n = 0; n < cCount; n++)
 	{
+		if (!g_bRun)
+		{
+			return 0;
+		}
 		client[n]->Connect("127.0.0.1", 4567);
 	}
 
@@ -47,7 +55,7 @@ int main(int argc, char** argv)
 		for (int n = 0; n < cCount; n++)
 		{
 			client[n]->SendData(&login);
-			client[n]->OnRun();
+			//client[n]->OnRun();
 		}
 	}
 
@@ -58,6 +66,5 @@ int main(int argc, char** argv)
 	}
 
 	printf("客户端退出，任务结束...\n");
-	getchar();
 	return 0;
 }
