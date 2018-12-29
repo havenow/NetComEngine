@@ -189,7 +189,7 @@ public:
 			//NewUserJoin userJoin;
 			//SendData2All(&userJoin);
 			_clients.push_back(new ClientSocket(cSock));
-			printf("<socket=%d>新客户端<%d>加入：socket = %d, IP = %s\n", (int)_sock, _clients.size(), (int)cSock, inet_ntoa(clientAddr.sin_addr));
+			//printf("<socket=%d>新客户端<%d>加入：socket = %d, IP = %s\n", (int)_sock, _clients.size(), (int)cSock, inet_ntoa(clientAddr.sin_addr));
 		}
 		return cSock;
 	}
@@ -266,6 +266,7 @@ public:
 			{
 				FD_CLR(_sock, &fdRead);
 				Accept();
+				return true;
 			}
 
 			for (int n = (int)_clients.size() - 1; n >= 0; n--)

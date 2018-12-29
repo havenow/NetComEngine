@@ -23,7 +23,7 @@ void cmdThread()
 
 int main(int argc, char** argv)
 {
-	const int cCount = 1000;// FD_SETSIZE - 1;
+	const int cCount = 10000;// FD_SETSIZE - 1;
 	EasyTcpClient* client[cCount];
 
 	for (int n = 0; n < cCount; n++)
@@ -41,6 +41,7 @@ int main(int argc, char** argv)
 			return 0;
 		}
 		client[n]->Connect("127.0.0.1", 4567);
+		printf("Connect=%d\n", n);
 	}
 
 	//Æô¶¯UIÏß³Ì

@@ -59,7 +59,7 @@ public:
 		}
 		else
 		{
-			printf("建立socket=<%d>成功...\n", _sock);
+			//printf("建立socket=<%d>成功...\n", _sock);
 		}
 	}
 
@@ -79,7 +79,7 @@ public:
 #else
 		_sin.sin_addr.s_addr = inet_addr(ip);//服务器的ip地址；如果客户端在虚拟机中运行的，注意ip地址
 #endif
-		printf("<socket=%d>正在连接服务器<%s : %d>...\n", _sock, ip, port);
+		//printf("<socket=%d>正在连接服务器<%s : %d>...\n", _sock, ip, port);
 		int ret = connect(_sock, (sockaddr*)(&_sin), sizeof(sockaddr_in));
 		if (SOCKET_ERROR == ret)
 		{
@@ -87,7 +87,7 @@ public:
 		}
 		else
 		{
-			printf("<socket=%d>连接服务器<%s : %d>成功...\n", _sock, ip, port);
+			//printf("<socket=%d>连接服务器<%s : %d>成功...\n", _sock, ip, port);
 		}
 		return ret;
 	}
