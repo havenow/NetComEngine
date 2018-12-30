@@ -12,12 +12,13 @@ void workFun(int index)
 {
 	for (int n = 0; n < 20000000; n++)
 	{
-		m.lock();
+		//自解锁
+		lock_guard<mutex> lg(m);
+		//m.lock();
 		//临界区域-开始
-		//cout << index << "Hello, other thread." << n << endl;
 		sum++;
 		//临界区域-结束
-		m.unlock();
+		//m.unlock();
 	}
 }
 
