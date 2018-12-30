@@ -1,19 +1,19 @@
 #include <iostream>
 #include <thread>
 #include <mutex>
-
+#include <atomic>//原子
 #include "CELLTimestamp.hpp"
 using namespace std;
-
+//原子操作
 mutex m;
 const int tCount = 4;
-int sum = 0;
+atomic<int> sum = 0;//效率比加锁高
 void workFun(int index)
 {
 	for (int n = 0; n < 20000000; n++)
 	{
 		//自解锁
-		lock_guard<mutex> lg(m);
+		//lock_guard<mutex> lg(m);
 		//m.lock();
 		//临界区域-开始
 		sum++;
