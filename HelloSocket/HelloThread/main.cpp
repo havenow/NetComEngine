@@ -1,21 +1,29 @@
 #include <iostream>
 #include <thread>
+#include <mutex>
 using namespace std;
 
+mutex m;
 void workFun(int index)
 {
-	for (int n = 0; n < 4; n++)
-		cout << index << "Hello, other thread." << endl;
+	for (int n = 0; n < 40; n++)
+	{
+		m.lock();
+		//临界区域-开始
+		cout << index << "Hello, other thread." << n << endl;
+		//临界区域-结束
+		m.unlock();
+	}
 }
 
 int main(int argc, char* argv[])
 {
-	std::thread t[3];
-	for (int n = 0; n < 3; n++)
+	std::thread t[4];
+	for (int n = 0; n < 4; n++)
 	{
 		t[n] = std::thread(workFun, n);
 	}
-	for (int n = 0; n < 3; n++)
+	for (int n = 0; n < 4; n++)
 	{
 		t[n].join();
 		//t[n].detach();
