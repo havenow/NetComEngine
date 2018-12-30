@@ -1,16 +1,21 @@
 #include <iostream>
 #include <thread>
 #include <mutex>
+
+#include "CELLTimestamp.hpp"
 using namespace std;
 
 mutex m;
+const int tCount = 4;
+int sum = 0;
 void workFun(int index)
 {
-	for (int n = 0; n < 40; n++)
+	for (int n = 0; n < 20000000; n++)
 	{
 		m.lock();
 		//临界区域-开始
-		cout << index << "Hello, other thread." << n << endl;
+		//cout << index << "Hello, other thread." << n << endl;
+		sum++;
 		//临界区域-结束
 		m.unlock();
 	}
@@ -18,20 +23,25 @@ void workFun(int index)
 
 int main(int argc, char* argv[])
 {
-	std::thread t[4];
-	for (int n = 0; n < 4; n++)
+	std::thread t[tCount];
+	for (int n = 0; n < tCount; n++)
 	{
 		t[n] = std::thread(workFun, n);
 	}
-	for (int n = 0; n < 4; n++)
+	CELLTimestamp tTime;
+	for (int n = 0; n < tCount; n++)
 	{
 		t[n].join();
 		//t[n].detach();
 	}
-	for (int n = 0; n < 4; n++)
-		cout << "Hello, main thread." << endl;
-	while (true)
+	cout << tTime.getElapsedTimeInMilliSec() << ", sum= " << sum << endl;
+	tTime.update();
+	sum = 0;
+	for (int n = 0; n < 80000000; n++)
 	{
+		sum++;
 	}
+	cout << tTime.getElapsedTimeInMilliSec() << ", sum= " << sum << endl;
+	cout << "Hello, main thread." << endl;
 	return 0;
 }
