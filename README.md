@@ -37,3 +37,5 @@ Windows：select、IOCP
 
 FD_SETSIZE Windows下是64，Linux和MACos下是1024。     
 
+![](https://github.com/havenow/NetComEngine/blob/master/pic/%E7%AE%80%E6%98%93TCP%E5%AE%A2%E6%88%B7%E7%AB%AF1.x%20client.png)
+
